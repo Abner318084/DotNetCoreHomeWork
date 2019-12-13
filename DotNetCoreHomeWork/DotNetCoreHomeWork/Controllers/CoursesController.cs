@@ -53,6 +53,13 @@ namespace DotNetCoreHomeWork.Controllers
             return await _context.VwCourseStudentCount.ToListAsync();
         }
 
+        [HttpGet("GetDepartmentCourseCount")]
+        public async Task<ActionResult<IEnumerable<VwDepartmentCourseCount>>> GetDepartmentCourseCount()
+        {
+            var result = await _context.VwDepartmentCourseCount.FromSqlInterpolated($"select * from VwDepartmentCourseCount").ToListAsync();
+            return result;
+        }
+
         // PUT: api/Courses/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
