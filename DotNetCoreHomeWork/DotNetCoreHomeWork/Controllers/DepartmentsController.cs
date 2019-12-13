@@ -52,11 +52,9 @@ namespace DotNetCoreHomeWork.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(department).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _context.Database.ExecuteSqlInterpolated($"EXEC Department_Update {department.DepartmentId},{department.Name},{department.Budget},{department.StartDate},{department.InstructorId},{department.RowVersion}");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,9 +77,7 @@ namespace DotNetCoreHomeWork.Controllers
         [HttpPost]
         public async Task<ActionResult<Department>> PostDepartment(Department department)
         {
-            _context.Department.Add(department);
-            await _context.SaveChangesAsync();
-
+            _context.Database.ExecuteSqlInterpolated($"EXEC Department_Insert {department.Name},{department.Budget},{department.StartDate},{department.InstructorId}");
             return CreatedAtAction("GetDepartment", new { id = department.DepartmentId }, department);
         }
 
@@ -94,9 +90,7 @@ namespace DotNetCoreHomeWork.Controllers
             {
                 return NotFound();
             }
-
-            _context.Department.Remove(department);
-            await _context.SaveChangesAsync();
+            _context.Database.ExecuteSqlInterpolated($"EXEC Department_Delete {department.DepartmentId},{department.RowVersion}");
 
             return department;
         }
