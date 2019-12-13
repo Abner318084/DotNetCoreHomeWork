@@ -24,14 +24,14 @@ namespace DotNetCoreHomeWork.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Department>>> GetDepartment()
         {
-            return await _context.Department.ToListAsync();
+            return await _context.Department.Where(d => !d.IsDeleted).ToListAsync();
         }
 
         // GET: api/Departments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Department>> GetDepartment(int id)
         {
-            var department = await _context.Department.FindAsync(id);
+            var department = await _context.Department.SingleOrDefaultAsync(d => !d.IsDeleted && d.DepartmentId == id);
 
             if (department == null)
             {
@@ -90,7 +90,8 @@ namespace DotNetCoreHomeWork.Controllers
             {
                 return NotFound();
             }
-            _context.Database.ExecuteSqlInterpolated($"EXEC Department_Delete {department.DepartmentId},{department.RowVersion}");
+            //_context.Database.ExecuteSqlInterpolated($"EXEC Department_Delete {department.DepartmentId},{department.RowVersion}");
+            department.IsDeleted = true;
 
             return department;
         }
