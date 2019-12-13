@@ -26,6 +26,7 @@ namespace DotNetCoreHomeWork.Models.Ef
         public int? InstructorId { get; set; }
         [Required]
         public byte[] RowVersion { get; set; }
+        public DateTime? DateModified { get; set; }
 
         [ForeignKey(nameof(InstructorId))]
         [InverseProperty(nameof(Person.Department))]

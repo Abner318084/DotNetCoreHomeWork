@@ -22,6 +22,7 @@ namespace DotNetCoreHomeWork.Models.Ef
         public int Credits { get; set; }
         [Column("DepartmentID")]
         public int DepartmentId { get; set; }
+        public DateTime? DateModified { get; set; }
 
         [ForeignKey(nameof(DepartmentId))]
         [InverseProperty("Course")]
